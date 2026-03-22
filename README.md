@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Setup
+
+See **[FIREBASE_SETUP.md](./FIREBASE_SETUP.md)** for step-by-step instructions to configure Firebase (Auth + Firestore) and seed initial data (`npm run db:seed`).
+
 ## Getting Started
 
 First, run the development server:
