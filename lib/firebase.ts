@@ -1,3 +1,5 @@
+"use client";
+
 import { initializeApp, getApps, type FirebaseApp } from "firebase/app"
 import { getAuth, type Auth } from "firebase/auth"
 import { getFirestore, type Firestore } from "firebase/firestore"
@@ -13,20 +15,46 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 }
 
-const isConfigured =
-  firebaseConfig.apiKey &&
-  firebaseConfig.projectId &&
-  firebaseConfig.apiKey !== ""
+// Required Firebase config fields for initialization
+const REQUIRED_CONFIG_FIELDS = ['apiKey', 'authDomain', 'projectId', 'appId'] as const
+
+function validateFirebaseConfig() {
+  const missing = REQUIRED_CONFIG_FIELDS.filter(
+    (field) => !firebaseConfig[field as keyof typeof firebaseConfig]
+  )
+  
+  if (missing.length > 0) {
+    console.error(
+      `Firebase configuration incomplete. Missing env vars: ${missing
+        .map((f) => `NEXT_PUBLIC_FIREBASE_${f.toUpperCase()}`)
+        .join(', ')}`
+    )
+    return false
+  }
+  return true
+}
+
+const isConfigured = validateFirebaseConfig()
 
 let app: FirebaseApp
 let auth: Auth
 let db: Firestore
 
-if (isConfigured) {
-  app = getApps().length ? (getApps()[0] as FirebaseApp) : initializeApp(firebaseConfig)
-  auth = getAuth(app)
-  db = getFirestore(app)
+if (isConfigured && typeof window !== 'undefined') {
+  try {
+    app = getApps().length ? (getApps()[0] as FirebaseApp) : initializeApp(firebaseConfig)
+    auth = getAuth(app)
+    db = getFirestore(app)
+  } catch (error) {
+    console.error('Firebase initialization error:', error)
+    app = null as unknown as FirebaseApp
+    auth = null as unknown as Auth
+    db = null as unknown as Firestore
+  }
 } else {
+  if (typeof window !== 'undefined') {
+    console.warn('Firebase not initialized - configuration missing or running on server')
+  }
   app = null as unknown as FirebaseApp
   auth = null as unknown as Auth
   db = null as unknown as Firestore

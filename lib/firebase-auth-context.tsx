@@ -54,32 +54,52 @@ export function FirebaseAuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const signInWithGoogle = async () => {
-    if (!isAuthConfigured) throw new Error("Firebase not configured")
+    if (!isAuthConfigured) {
+      const error = new Error("Firebase Authentication not configured")
+      console.error(error.message)
+      throw error
+    }
     const { user } = await signInWithPopup(auth, new GoogleAuthProvider())
     return user
   }
 
   const signInWithFacebook = async () => {
-    if (!isAuthConfigured) throw new Error("Firebase not configured")
+    if (!isAuthConfigured) {
+      const error = new Error("Firebase Authentication not configured.")
+      console.error(error.message)
+      throw error
+    }
     const { user } = await signInWithPopup(auth, new FacebookAuthProvider())
     return user
   }
 
   const signInWithEmail = async (email: string, password: string) => {
-    if (!isAuthConfigured) throw new Error("Firebase not configured")
+    if (!isAuthConfigured) {
+      const error = new Error("Firebase Authentication not configured.")
+      console.error(error.message)
+      throw error
+    }
     const { user } = await signInWithEmailAndPassword(auth, email, password)
     return user
   }
 
   const signUpWithEmail = async (email: string, password: string, displayName?: string) => {
-    if (!isAuthConfigured) throw new Error("Firebase not configured")
+    if (!isAuthConfigured) {
+      const error = new Error("Firebase Authentication not configured.")
+      console.error(error.message)
+      throw error
+    }
     const { user } = await createUserWithEmailAndPassword(auth, email, password)
     if (displayName) await updateProfile(user, { displayName })
     return user
   }
 
   const signInWithPhone = async (phone: string) => {
-    if (!isAuthConfigured) throw new Error("Firebase not configured")
+    if (!isAuthConfigured) {
+      const error = new Error("Firebase Authentication not configured.")
+      console.error(error.message)
+      throw error
+    }
     if (typeof window === "undefined") throw new Error("Phone auth requires browser")
     const verifier = new RecaptchaVerifier(auth, "recaptcha-container", {
       size: "invisible",

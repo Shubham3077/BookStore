@@ -138,7 +138,6 @@ export default function BuyNowModal({ book, isOpen, onClose }: BuyNowModalProps)
           </DialogHeader>
 
           <div className="py-6">
-            {/* Add New Address */}
             {step === "addAddress" && (
               <AddressForm
                 userId={user?.uid || ""}
