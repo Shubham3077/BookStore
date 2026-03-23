@@ -11,6 +11,9 @@ import AddressSelector from "./AddressSelector"
 import AddressForm from "./AddressForm"
 import OrderSummary from "./OrderSummary"
 import PaymentGateway from "./PaymentGateway"
+import DeliveryAddressModal from "./modals/DeliveryAddressModal"
+import OrderSummaryModal from "./modals/OrderSummaryModal"
+import PaymentModal from "./modals/PaymentModal"
 
 type BuyNowStep = "addresses" | "addAddress" | "summary" | "payment" | "success"
 
@@ -78,83 +81,119 @@ export default function BuyNowModal({ book, isOpen, onClose }: BuyNowModalProps)
     setStep("success")
   }
 
-  const handleClose = () => {
-    setStep("addresses")
+  const handleAdressClose = () => {
     onClose()
   }
 
+  const handleSummaryClose = () => {
+    setStep("addresses")
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>
-            {step === "addresses" && "Delivery Address"}
-            {step === "addAddress" && "Add New Address"}
-            {step === "summary" && "Order Summary"}
-            {step === "payment" && "Payment"}
-            {step === "success" && "Order Confirmed"}
-          </DialogTitle>
-        </DialogHeader>
+    <>
+      {/* Delivery Address Modal */}
+      <DeliveryAddressModal
+        open={step === "addresses" && isOpen}
+        onClose={handleAdressClose}
+        addresses={addresses}
+        onSelect={handleAddressSelect}
+        onAddNew={handleAddNewAddress}
+      />
 
-        <div className="py-6">
-          {/* Step 1: Address Selection */}
-          {step === "addresses" && (
-            <AddressSelector
-              addresses={addresses}
-              loading={loading}
-              onSelectAddress={handleAddressSelect}
-              onAddNewAddress={handleAddNewAddress}
-            />
-          )}
+      {/* Order Summary Modal */}
+      {selectedAddress && (
+        <OrderSummaryModal
+          open={step === "summary"}
+          onClose={handleSummaryClose}
+          onProceed={handleProceedToPayment}
+          onChangeAddress={() => setStep("addresses")}
+          book={book}
+          address={selectedAddress}
+        />
+      )}
 
-          {/* Step 2: Add New Address */}
-          {step === "addAddress" && (
-            <AddressForm
-              userId={user?.uid || ""}
-              onAddressSaved={handleAddressSaved}
-              onCancel={() => setStep(addresses.length > 0 ? "addresses" : "addresses")}
-            />
-          )}
+      {/* Payment Modal */}
+      {selectedAddress && (
+        <PaymentModal
+          open={step === "payment"}
+          onClose={() => setStep("summary")}
+          onPay={() => {
+            // Payment is handled by PaymentGateway below
+            // This just closes the PaymentModal after payment gateway processes
+          }}
+          book={book}
+          address={selectedAddress}
+        />
+      )}
 
-          {/* Step 3: Order Summary */}
-          {step === "summary" && selectedAddress && (
-            <OrderSummary
-              book={book}
-              address={selectedAddress}
-              onEditAddress={() => setStep("addresses")}
-              onProceedToPayment={handleProceedToPayment}
-            />
-          )}
+      {/* Main Dialog for Add Address, Payment (via PaymentGateway), and Success States */}
+      <Dialog open={(step === "addAddress" || step === "payment" || step === "success") && isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-2xl" >
+          <DialogHeader>
+            <DialogTitle>
+              {step === "addAddress" && "Add New Address"}
+              {step === "payment" && "Complete Payment"}
+              {step === "success" && "Order Confirmed"}
+            </DialogTitle>
+          </DialogHeader>
 
-          {/* Step 4: Payment */}
-          {step === "payment" && selectedAddress && (
-            <PaymentGateway
-              book={book}
-              address={selectedAddress}
-              onPaymentSuccess={handlePaymentSuccess}
-              onCancel={() => setStep("summary")}
-            />
-          )}
+          <div className="py-6">
+            {/* Add New Address */}
+            {step === "addAddress" && (
+              <AddressForm
+                userId={user?.uid || ""}
+                onAddressSaved={handleAddressSaved}
+                onCancel={() => setStep(addresses.length > 0 ? "addresses" : "addresses")}
+              />
+            )}
 
-          {/* Step 5: Success */}
-          {step === "success" && (
-            <div className="text-center py-8">
-              <div className="mb-4">
-                <div className="inline-flex items-center justify-center h-16 w-16 bg-green-100 rounded-full">
-                  <svg className="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+            {/* Payment Gateway */}
+            {step === "payment" && selectedAddress && (
+              <PaymentGateway
+                book={book}
+                address={selectedAddress}
+                onPaymentSuccess={handlePaymentSuccess}
+                onCancel={() => setStep("summary")}
+              />
+            )}
+
+            {/* Success */}
+            {step === "success" && (
+              <div className="text-center py-8">
+                <div className="mb-4">
+                  <div className="inline-flex items-center justify-center h-16 w-16 bg-green-100 rounded-full">
+                    <svg
+                      className="h-8 w-8 text-green-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
                 </div>
+                <h3 className="text-lg font-semibold text-foreground mb-2">
+                  Order Confirmed!
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Your order has been placed successfully.
+                </p>
+                <Button
+                  onClick={onClose}
+                  className="bg-primary text-white hover:bg-primary/90"
+                >
+                  Continue Shopping
+                </Button>
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">Order Confirmed!</h3>
-              <p className="text-gray-600 mb-6">Your order has been placed successfully.</p>
-              <Button onClick={handleClose} className="bg-primary text-white hover:bg-primary/90">
-                Continue Shopping
-              </Button>
-            </div>
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }

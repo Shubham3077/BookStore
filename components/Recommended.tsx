@@ -28,7 +28,7 @@ const Recommended = ({ books }: Props) => {
               key={book.id}
               className="group bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5"
             >
-              <div className="aspect-[3/4] overflow-hidden bg-muted">
+              <div className="aspect-[3/4] overflow-hidden bg-(muted)">
                 <Image
                   src={book.cover}
                   alt={`Cover of ${book.title}`}

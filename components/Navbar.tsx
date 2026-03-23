@@ -11,7 +11,7 @@ const Navbar = () => {
   const router = useRouter()
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <nav className="sticky top-0 z-50 border-b border-gray-200 bg-background/95 backdrop-blur-sm border-border/60 shadow-[0_1px_3px_0_hsl(var(--foreground)/0.04)]">
       <div className="mx-auto max-w-[90%] sm:max-w-[85%] lg:max-w-[80%] flex items-center justify-between h-16 lg:h-20">
         {/* Logo */}
         <a href="/" className="font-serif text-lg lg:text-xl font-bold text-foreground shrink-0">
@@ -38,7 +38,7 @@ const Navbar = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-10 w-10 lg:h-11 lg:w-11 text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors"
+            className="h-10 w-10 lg:h-11 lg:w-11 text-gray-700 hover:bg-(--primary)-100 hover:text-primary transition-colors"
             aria-label="Search"
           >
             <Search className="h-5 w-5 lg:h-6 lg:w-6" />
@@ -56,7 +56,7 @@ const Navbar = () => {
                   aria-label="Shopping cart"
                 >
                   <ShoppingBag className="h-5 w-5 lg:h-6 lg:w-6" />
-                  <span className="absolute -top-1 -right-1 h-5 w-5 lg:h-5 lg:w-5 rounded-full bg-primary text-white text-[10px] lg:text-xs flex items-center justify-center font-bold shadow-md">
+                  <span className="absolute -top-1 -right-1 h-5 w-5 lg:h-5 lg:w-5 rounded-full bg-primary text-text text-[10px] lg:text-xs flex items-center justify-center font-bold shadow-md">
                     3
                   </span>
                 </Button>
@@ -76,7 +76,7 @@ const Navbar = () => {
             ) : (
               /* Login Button */
               <Button
-                className="bg-primary text-white hover:bg-primary/90 text-sm lg:text-base font-medium px-4 lg:px-6 h-10 lg:h-11 rounded-full shadow-md hover:shadow-lg transition-all"
+                className="bg-primary/80 text-text hover:bg-primary text-sm lg:text-base font-medium px-4 lg:px-6 h-10 lg:h-11 rounded-full shadow-md hover:shadow-lg transition-all"
                 onClick={() => router.push("/login")}
               >
                 Login

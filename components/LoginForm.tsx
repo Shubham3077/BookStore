@@ -105,30 +105,30 @@ const LoginForm = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-16 bg-[var(--login-bg)]">
+    <div className="min-h-screen flex items-center justify-center px-6 py-16 bg-background">
       <div className="w-full max-w-md">
         {/* Card */}
-        <div className="bg-[var(--login-card)] rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[var(--login-border)] overflow-hidden">
+        <div className="bg-card rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-border/60 overflow-hidden">
           {/* Header */}
-          <div className="pt-12 pb-8 px-10 text-center">
-            <h1 className="font-serif text-3xl font-bold text-[var(--text)] leading-tight">
+          <div className="pt-10 pb-6 px-18 text-center">
+            <h1 className="font-serif text-3xl font-bold text-foreground leading-tight">
               {mode === "signin" ? "Welcome Back" : "Create Account"}
             </h1>
-            <p className="text-[#6B7280] text-sm mt-3">
+            <p className="text-muted-foreground text-sm mt-2">
               {mode === "signin"
                 ? "Sign in to continue to your bookshelf"
                 : "Join our community of readers"}
             </p>
           </div>
 
-          <div className="px-10 pb-10">
+          <div className="px-8 pb-8">
             {/* Social Buttons */}
             <div className="space-y-4 mb-8">
               <button
                 type="button"
                 onClick={() => handleOAuth(signInWithGoogle)}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-3 h-12 rounded-lg border border-[var(--login-border)] bg-[var(--login-input)] text-[var(--text)] text-sm font-medium transition-all duration-200 hover:bg-[#EDE9E1] active:scale-[0.98] disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-3 h-11 rounded-lg border border-border bg-background text-foreground text-sm font-medium transition-all duration-200 hover:bg-secondary/60 active:scale-[0.98]"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
@@ -142,7 +142,7 @@ const LoginForm = () => {
                 type="button"
                 onClick={() => handleOAuth(signInWithFacebook)}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-3 h-12 rounded-lg border border-[var(--login-border)] bg-[var(--login-input)] text-[var(--text)] text-sm font-medium transition-all duration-200 hover:bg-[#EDE9E1] active:scale-[0.98] disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-3 h-11 rounded-lg border border-border bg-background text-foreground text-sm font-medium transition-all duration-200 hover:bg-secondary/60 active:scale-[0.98]"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -153,23 +153,23 @@ const LoginForm = () => {
 
             {/* Divider */}
             <div className="flex items-center gap-4 mb-8">
-              <div className="flex-1 h-px bg-[var(--login-border)]" />
-              <span className="text-xs text-[#9CA3AF] uppercase tracking-[0.12em] font-medium">
+            <div className="flex-1 h-px bg-border" />
+              <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
                 or continue with
               </span>
-              <div className="flex-1 h-px bg-[var(--login-border)]" />
+              <div className="flex-1 h-px bg-border" />
             </div>
 
             {/* Tab Switcher */}
-            <div className="flex gap-1 mb-8 bg-[var(--login-input)] rounded-lg p-1.5">
+            <div className="flex gap-1 mb-6 bg-secondary/50 rounded-lg p-1">
               <button
                 type="button"
                 onClick={() => { setTab("email"); setError("") }}
                 className={cn(
-                  "flex-1 flex items-center justify-center gap-2 py-3 rounded-md text-sm font-medium transition-all duration-200",
+                  "flex-1 flex items-center justify-center gap-2 py-2 rounded-md text-sm font-medium transition-all duration-200",
                   tab === "email"
-                    ? "bg-[var(--login-card)] text-[var(--text)] shadow-sm"
-                    : "text-[#9CA3AF] hover:text-[var(--text)]"
+                    ? "bg-card text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 <Mail className="w-4 h-4" />
@@ -179,10 +179,10 @@ const LoginForm = () => {
                 type="button"
                 onClick={() => { setTab("phone"); setError("") }}
                 className={cn(
-                  "flex-1 flex items-center justify-center gap-2 py-3 rounded-md text-sm font-medium transition-all duration-200",
+                  "flex-1 flex items-center justify-center gap-2 py-2 rounded-md text-sm font-medium transition-all duration-200",
                   tab === "phone"
-                    ? "bg-[var(--login-card)] text-[var(--text)] shadow-sm"
-                    : "text-[#9CA3AF] hover:text-[var(--text)]"
+                    ? "bg-card text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 <Phone className="w-4 h-4" />
@@ -205,7 +205,7 @@ const LoginForm = () => {
 
               {mode === "signup" && (
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-xs font-medium text-[#6B7280] uppercase tracking-[0.1em]">
+                  <Label htmlFor="name" className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Full Name
                   </Label>
                   <Input
@@ -214,14 +214,14 @@ const LoginForm = () => {
                     placeholder="Your full name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="h-12 bg-[var(--login-input)] border-[var(--login-border)] focus:border-[var(--primary)] rounded-lg placeholder:text-[#9CA3AF]"
+                    className="h-11 bg-background border-border focus:border-primary rounded-lg placeholder:text-muted-foreground/50"
                   />
                 </div>
               )}
 
               {tab === "email" ? (
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-xs font-medium text-[#6B7280] uppercase tracking-[0.1em]">
+                  <Label htmlFor="name" className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Email Address
                   </Label>
                   <Input
@@ -230,12 +230,12 @@ const LoginForm = () => {
                     placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="h-12 bg-[var(--login-input)] border-[var(--login-border)] focus:border-[var(--primary)] rounded-lg placeholder:text-[#9CA3AF]"
+                    className="h-11 bg-background border-border focus:border-primary rounded-lg placeholder:text-muted-foreground/50"
                   />
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-xs font-medium text-[#6B7280] uppercase tracking-[0.1em]">
+                  <Label htmlFor="name" className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Phone Number
                   </Label>
                   <Input
@@ -244,20 +244,20 @@ const LoginForm = () => {
                     placeholder="+1 (555) 000-0000"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="h-12 bg-[var(--login-input)] border-[var(--login-border)] focus:border-[var(--primary)] rounded-lg placeholder:text-[#9CA3AF]"
+                    className="h-11 bg-background border-border focus:border-primary rounded-lg placeholder:text-muted-foreground/50"
                   />
                 </div>
               )}
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password" className="text-xs font-medium text-[#6B7280] uppercase tracking-[0.1em]">
+                <Label htmlFor="password" className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Password
                   </Label>
                   {mode === "signin" && (
                     <button
                       type="button"
-                      className="text-xs text-[var(--primary)] hover:opacity-80 font-medium transition-colors"
+                      className="text-xs text-primary hover:text-primary-hover font-medium transition-colors"
                     >
                       Forgot password?
                     </button>
@@ -270,12 +270,12 @@ const LoginForm = () => {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="h-12 bg-[var(--login-input)] border-[var(--login-border)] focus:border-[var(--primary)] rounded-lg pr-12 placeholder:text-[#9CA3AF]"
+                    className="h-11 bg-background border-border focus:border-primary rounded-lg pr-10 placeholder:text-muted-foreground/50"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-[var(--text)] transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -285,19 +285,19 @@ const LoginForm = () => {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 rounded-lg bg-[var(--primary)] text-white hover:opacity-90 font-semibold text-sm transition-all duration-200 active:scale-[0.98] mt-4 disabled:opacity-50"
+                className="w-full h-11 rounded-lg bg-primary text-primary-foreground hover:bg-primary-hover font-semibold text-sm transition-all duration-200 active:scale-[0.98] mt-2"
               >
                 {loading ? "Please wait..." : mode === "signin" ? "Sign In" : "Create Account"}
               </Button>
             </form>
 
             {/* Toggle mode */}
-            <p className="text-center text-sm text-[#6B7280] mt-8">
+            <p className="text-center text-sm text-muted-foreground mt-6">
               {mode === "signin" ? "New here? " : "Already have an account? "}
               <button
                 type="button"
                 onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setError("") }}
-                className="text-[var(--primary)] hover:opacity-80 font-semibold transition-colors"
+                className="text-primary hover:text-primary-hover font-semibold transition-colors"
               >
                 {mode === "signin" ? "Create an account" : "Sign in"}
               </button>
@@ -306,11 +306,11 @@ const LoginForm = () => {
         </div>
 
         {/* Footer note */}
-        <p className="text-center text-xs text-[#9CA3AF] mt-8 px-4">
+        <p className="text-center text-xs text-muted-foreground mt-6 px-4">
           By continuing, you agree to our{" "}
-          <a href="#" className="underline hover:text-[var(--text)] transition-colors">Terms of Service</a>
+          <a href="#" className="underline hover:text-foreground transition-colors">Terms of Service</a>
           {" "}and{" "}
-          <a href="#" className="underline hover:text-[var(--text)] transition-colors">Privacy Policy</a>
+          <a href="#" className="underline hover:text-foreground transition-colors">Privacy Policy</a>
         </p>
       </div>
     </div>

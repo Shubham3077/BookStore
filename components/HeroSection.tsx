@@ -7,7 +7,7 @@ type Props = { data: Hero | null }
 const HeroSection = ({ data }: Props) => {
   if (!data) return null
   return (
-    <section className="w-full bg-(--primary) py-16 lg:py-24">
+    <section className="w-full bg-primary py-16 lg:py-24">
       <div className="mx-auto w-[80%] text-center">
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-foreground leading-[1.15] mb-3">
           {data.title}
