@@ -59,18 +59,20 @@ export async function getBooks(): Promise<Book[]> {
 }
 
 export async function getHero(): Promise<Hero | null> {
-  if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) return null
+  console.log("getHero")
+  if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || !db) return null
   try {
     const snap = await getDoc(doc(db, "config", "hero"))
     if (!snap.exists()) return null
     return toData(snap.id, snap.data()) as Hero
-  } catch {
+  } catch (error) {
+    console.error(error);
     return null
   }
 }
 
 export async function getDiscount(): Promise<Discount | null> {
-  if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) return null
+  if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || !db) return null
   try {
     const snap = await getDoc(doc(db, "config", "discount"))
     if (!snap.exists()) return null

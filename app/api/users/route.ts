@@ -5,7 +5,10 @@ export async function POST(req: Request) {
   try {
     if (!adminAuth || !adminDb) {
       return NextResponse.json(
-        { error: "Server not configured. Add FIREBASE_SERVICE_ACCOUNT_KEY." },
+        { 
+          error: "Server not configured. Add FIREBASE_SERVICE_ACCOUNT_KEY.",
+          details: "To fix: Go to Firebase Console → Project Settings → Service Accounts → Generate new private key. Add to .env.local: FIREBASE_SERVICE_ACCOUNT_KEY='{...}' (full JSON as string)"
+        },
         { status: 503 }
       )
     }

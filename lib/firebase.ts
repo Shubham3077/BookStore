@@ -1,5 +1,3 @@
-"use client";
-
 import { initializeApp, getApps, type FirebaseApp } from "firebase/app"
 import { getAuth, type Auth } from "firebase/auth"
 import { getFirestore, type Firestore } from "firebase/firestore"
@@ -40,7 +38,7 @@ let app: FirebaseApp
 let auth: Auth
 let db: Firestore
 
-if (isConfigured && typeof window !== 'undefined') {
+if (isConfigured) {
   try {
     app = getApps().length ? (getApps()[0] as FirebaseApp) : initializeApp(firebaseConfig)
     auth = getAuth(app)
