@@ -81,30 +81,29 @@ export default function BuyNowModal({ book, isOpen, onClose }: BuyNowModalProps)
     setStep("success")
   }
 
-  const handleAdressClose = () => {
+  // Close entire flow on backdrop click
+  const handleCloseModal = () => {
     onClose()
-  }
-
-  const handleSummaryClose = () => {
-    setStep("addresses")
   }
 
   return (
     <>
-      {/* Delivery Address Modal */}
-      <DeliveryAddressModal
-        open={step === "addresses" && isOpen}
-        onClose={handleAdressClose}
-        addresses={addresses}
-        onSelect={handleAddressSelect}
-        onAddNew={handleAddNewAddress}
-      />
+      {/* Delivery Address Modal - Only shown when step is "addresses" */}
+      {step === "addresses" && isOpen && (
+        <DeliveryAddressModal
+          open={true}
+          onClose={handleCloseModal}
+          addresses={addresses}
+          onSelect={handleAddressSelect}
+          onAddNew={handleAddNewAddress}
+        />
+      )}
 
-      {/* Order Summary Modal */}
-      {selectedAddress && (
+      {/* Order Summary Modal - Only shown when step is "summary" */}
+      {step === "summary" && isOpen && selectedAddress && (
         <OrderSummaryModal
-          open={step === "summary"}
-          onClose={handleSummaryClose}
+          open={true}
+          onClose={handleCloseModal}
           onProceed={handleProceedToPayment}
           onChangeAddress={() => setStep("addresses")}
           book={book}
@@ -112,84 +111,77 @@ export default function BuyNowModal({ book, isOpen, onClose }: BuyNowModalProps)
         />
       )}
 
-      {/* Payment Modal */}
-      {selectedAddress && (
-        <PaymentModal
-          open={step === "payment"}
-          onClose={() => setStep("summary")}
-          onPay={() => {
-            // Payment is handled by PaymentGateway below
-            // This just closes the PaymentModal after payment gateway processes
-          }}
-          book={book}
-          address={selectedAddress}
-        />
-      )}
-
-      {/* Main Dialog for Add Address, Payment (via PaymentGateway), and Success States */}
-      <Dialog open={(step === "addAddress" || step === "payment" || step === "success") && isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-2xl" >
+      {/* Add Address Dialog - Only shown when step is "addAddress" */}
+      <Dialog open={step === "addAddress" && isOpen} onOpenChange={handleCloseModal}>
+        <DialogContent className="max-w-2xl bg-card">
           <DialogHeader>
-            <DialogTitle>
-              {step === "addAddress" && "Add New Address"}
-              {step === "payment" && "Complete Payment"}
-              {step === "success" && "Order Confirmed"}
-            </DialogTitle>
+            <DialogTitle>Add New Address</DialogTitle>
           </DialogHeader>
-
           <div className="py-6">
-            {step === "addAddress" && (
-              <AddressForm
-                userId={user?.uid || ""}
-                onAddressSaved={handleAddressSaved}
-                onCancel={() => setStep(addresses.length > 0 ? "addresses" : "addresses")}
-              />
-            )}
+            <AddressForm
+              userId={user?.uid || ""}
+              onAddressSaved={handleAddressSaved}
+              onCancel={handleCloseModal}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
 
-            {/* Payment Gateway */}
-            {step === "payment" && selectedAddress && (
+      {/* Payment Gateway Dialog - Only shown when step is "payment" */}
+      <Dialog open={step === "payment" && isOpen} onOpenChange={handleCloseModal}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Complete Payment</DialogTitle>
+          </DialogHeader>
+          <div className="py-6">
+            {selectedAddress && (
               <PaymentGateway
                 book={book}
                 address={selectedAddress}
                 onPaymentSuccess={handlePaymentSuccess}
-                onCancel={() => setStep("summary")}
+                onCancel={handleCloseModal}
               />
             )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
-            {/* Success */}
-            {step === "success" && (
-              <div className="text-center py-8">
-                <div className="mb-4">
-                  <div className="inline-flex items-center justify-center h-16 w-16 bg-green-100 rounded-full">
-                    <svg
-                      className="h-8 w-8 text-green-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
-                  Order Confirmed!
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  Your order has been placed successfully.
-                </p>
-                <Button
-                  onClick={onClose}
-                  className="bg-primary text-white hover:bg-primary/90"
+      {/* Success Dialog - Only shown when step is "success" */}
+      <Dialog open={step === "success" && isOpen} onOpenChange={handleCloseModal}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Order Confirmed</DialogTitle>
+          </DialogHeader>
+          <div className="text-center py-8">
+            <div className="mb-4">
+              <div className="inline-flex items-center justify-center h-16 w-16 bg-green-100 rounded-full">
+                <svg
+                  className="h-8 w-8 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  Continue Shopping
-                </Button>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
               </div>
-            )}
+            </div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              Order Confirmed!
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Your order has been placed successfully.
+            </p>
+            <Button
+              onClick={handleCloseModal}
+              className="bg-primary text-white hover:bg-primary/90"
+            >
+              Continue Shopping
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

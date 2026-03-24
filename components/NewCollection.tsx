@@ -52,7 +52,7 @@ const NewCollection = ({ books }: Props) => {
             {/* Right Arrow - Properly centered */}
             <button
               onClick={() => scroll("right")}
-              className="absolute -left-5 lg:-left-8 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-primary/10 text-foreground hover:bg-primary/20 border border-border flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow-md"
+              className="absolute -right-5 lg:-right-8 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-primary/10 text-foreground hover:bg-primary/20 border border-border flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow-md"
               aria-label="Scroll right"
             >
               <ChevronRight className="h-5 w-5 lg:h-6 lg:w-6" />
@@ -106,7 +106,7 @@ const NewCollection = ({ books }: Props) => {
                       {/* Add to Cart Button */}
                       <Button
                         variant="outline"
-                        className="flex-1 bg-(--primary) border-2 border-gray-300 text-foreground hover:bg-gray-50 hover:border-primary text-xs lg:text-sm font-medium rounded-full py-2 lg:py-2.5 h-10 lg:h-11 transition-all duration-200"
+                        className="flex-1 h-10 lg:h-11 rounded-full border-border text-foreground font-medium text-xs lg:text-sm transition-all duration-200"
                       >
                         Add to Cart
                       </Button>
@@ -114,7 +114,7 @@ const NewCollection = ({ books }: Props) => {
                       {/* Buy Now Button */}
                       <Button
                         onClick={() => handleBuyNow(book)}
-                        className="flex-1 bg-primary text-(--text) hover:bg-primary/90 text-xs lg:text-sm font-semibold rounded-full py-2 lg:py-2.5 h-10 lg:h-11 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
+                        className="flex-1 h-10 lg:h-11 rounded-full bg-primary text-primary-foreground hover:bg-primary-hover font-semibold text-xs lg:text-sm shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
                       >
                         Buy Now
                       </Button>

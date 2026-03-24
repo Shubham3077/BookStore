@@ -54,7 +54,7 @@ export default function AddressForm({ userId, onAddressSaved, onCancel }: Addres
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 ">
       {/* Full Name */}
       <div>
         <Label htmlFor="fullName" className="text-sm font-medium">
@@ -68,7 +68,7 @@ export default function AddressForm({ userId, onAddressSaved, onCancel }: Addres
           value={formData.fullName}
           onChange={handleChange}
           placeholder="John Doe"
-          className="mt-1"
+          className="mt-2 h-11 border-border bg-background"
         />
       </div>
 
@@ -85,7 +85,7 @@ export default function AddressForm({ userId, onAddressSaved, onCancel }: Addres
           value={formData.phoneNumber}
           onChange={handleChange}
           placeholder="+91 98765 43210"
-          className="mt-1"
+          className="mt-2 h-11 border-border bg-background"
         />
       </div>
 
@@ -103,7 +103,7 @@ export default function AddressForm({ userId, onAddressSaved, onCancel }: Addres
             value={formData.pincode}
             onChange={handleChange}
             placeholder="110001"
-            className="mt-1"
+            className="mt-2 h-11 border-border bg-background"
           />
         </div>
 
@@ -120,7 +120,7 @@ export default function AddressForm({ userId, onAddressSaved, onCancel }: Addres
             value={formData.city}
             onChange={handleChange}
             placeholder="New Delhi"
-            className="mt-1"
+            className="mt-2 h-11 border-border bg-background"
           />
         </div>
       </div>
@@ -138,7 +138,7 @@ export default function AddressForm({ userId, onAddressSaved, onCancel }: Addres
           value={formData.state}
           onChange={handleChange}
           placeholder="Delhi"
-          className="mt-1"
+          className="mt-2 h-11 border-border bg-background"
         />
       </div>
 
@@ -155,25 +155,25 @@ export default function AddressForm({ userId, onAddressSaved, onCancel }: Addres
           onChange={handleChange}
           placeholder="Apartment/House No., Road name..."
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
+          className="w-full px-3 py-2 mt-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm bg-background text-foreground"
         />
       </div>
 
       {/* Actions */}
-      <div className="flex gap-3 pt-4">
+      <div className="flex gap-3 pt-6">
         <Button
           type="button"
           variant="outline"
           onClick={onCancel}
           disabled={loading}
-          className="flex-1"
+          className="flex-1 h-11 rounded-lg border-border text-foreground font-medium"
         >
           Cancel
         </Button>
         <Button
           type="submit"
           disabled={loading}
-          className="flex-1 bg-primary text-white hover:bg-primary/90"
+          className="flex-1 h-11 rounded-lg bg-primary text-primary-foreground hover:bg-primary-hover font-semibold"
         >
           {loading ? "Saving..." : "Save Address"}
         </Button>
