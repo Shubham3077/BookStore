@@ -11,9 +11,17 @@ export type Book = {
   id: string
   title: string
   author: string
-  price: string
+  authorDescription?: string
+  bookDescription?: string
+  bookDetails?: {
+    dimensions: string
+    pages: number
+    publisher: string
+  }
+  price: number
   cover: string
   badge: string | null
+  order?: number
   rating?: number
   review?: string
 }

@@ -26,6 +26,7 @@ export default function PaymentGateway({
 }: PaymentGatewayProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [paymentAttempted, setPaymentAttempted] = useState(false)
 
   useEffect(() => {
     // Load Razorpay script
@@ -33,15 +34,18 @@ export default function PaymentGateway({
     script.src = "https://checkout.razorpay.com/v1/checkout.js"
     script.async = true
     script.onload = () => {
-      console.log("Razorpay script loaded")
+      console.log("✅ Razorpay script loaded successfully")
     }
     script.onerror = () => {
-      setError("Failed to load payment gateway")
+      console.error("❌ Failed to load Razorpay script")
+      setError("Payment gateway failed to load. Please refresh the page and try again.")
     }
     document.body.appendChild(script)
 
     return () => {
-      document.body.removeChild(script)
+      if (document.body.contains(script)) {
+        document.body.removeChild(script)
+      }
     }
   }, [])
 
@@ -61,6 +65,7 @@ export default function PaymentGateway({
           bookId: book.id,
           userId: address.userId,
           addressId: address.id,
+          type: "single",
         }),
       })
 
@@ -80,8 +85,9 @@ export default function PaymentGateway({
         description: `Purchase of ${book.title}`,
         customer_notif: 1,
         handler: async (response: any) => {
-          // Verify payment on backend
+          // Payment gateway returned a valid response
           try {
+            console.log("✅ Payment successful, verifying with server...")
             const verifyResponse = await fetch("/api/payments/verify", {
               method: "POST",
               headers: {
@@ -100,15 +106,32 @@ export default function PaymentGateway({
             const verifyData = await verifyResponse.json()
 
             if (!verifyResponse.ok) {
-              throw new Error(verifyData.error || "Payment verification failed")
+              console.error("❌ Verification failed:", verifyData.error)
+              throw new Error(verifyData.error || "Payment verification failed. Please contact support.")
             }
 
+            console.log("✅ Payment verified successfully")
             // Show success
             onPaymentSuccess()
+            setLoading(false)
           } catch (error) {
-            console.error("Payment verification error:", error)
-            setError("Payment verification failed. Please contact support.")
+            console.error("❌ Payment verification error:", error)
+            const errorMsg = error instanceof Error ? error.message : "Payment verification failed. Please contact support."
+            setError(errorMsg)
+            setLoading(false)
+            setPaymentAttempted(false)
           }
+        },
+        modal: {
+          ondismiss: () => {
+            // Handle when user closes the Razorpay modal
+            console.log("🔴 Payment modal closed/dismissed")
+            if (paymentAttempted) {
+              setError("Payment was not completed. Please try again.")
+            }
+            setLoading(false)
+            setPaymentAttempted(false)
+          },
         },
         prefill: {
           name: address.fullName,
@@ -125,20 +148,47 @@ export default function PaymentGateway({
       }
 
       if (window.Razorpay) {
-        const razorpay = new window.Razorpay(options)
-        razorpay.open()
+        try {
+          const razorpay = new window.Razorpay(options)
+          setPaymentAttempted(true) // Mark that payment attempt is in progress
+          razorpay.open()
+        } catch (err) {
+          console.error("❌ Failed to open Razorpay modal:", err)
+          setError("Failed to open payment gateway. Please try again.")
+          setLoading(false)
+          setPaymentAttempted(false)
+        }
       } else {
-        setError("Payment gateway not loaded. Please try again.")
+        console.error("❌ Razorpay SDK not loaded")
+        setError("Payment gateway is not available. Please refresh and try again.")
+        setLoading(false)
+        setPaymentAttempted(false)
       }
     } catch (err) {
-      console.error("Payment error:", err)
-      setError(err instanceof Error ? err.message : "Payment failed. Please try again.")
-    } finally {
+      console.error("❌ Payment initialization error:", err)
+      
+      // Provide detailed error messages based on error type
+      let userErrorMessage = "Payment initialization failed. Please try again."
+      
+      if (err instanceof TypeError) {
+        userErrorMessage = "Network error. Please check your internet connection and try again."
+      } else if (err instanceof Error) {
+        userErrorMessage = err.message
+      } else if (typeof err === "object" && err !== null && "message" in err) {
+        userErrorMessage = (err as any).message
+      }
+      
+      setError(userErrorMessage)
       setLoading(false)
+      setPaymentAttempted(false)
+    } finally {
+      // Ensure loading is reset even if try-catch misses something
+      // (though the explicit setLoading calls above should handle it)
     }
   }
 
-  const price = parseFloat(book.price.replace("$", ""))
+  // Price is now numeric from database
+  const price = typeof book.price === "number" ? book.price : 0
   const total = price * 1.05
 
   return (
@@ -168,8 +218,26 @@ export default function PaymentGateway({
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-50 rounded-lg p-3 border border-red-200">
-          <p className="text-sm text-red-700">{error}</p>
+        <div className="bg-red-50 rounded-lg p-4 border border-red-200">
+          <p className="text-sm font-medium text-red-900 mb-3">{error}</p>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => setError("")}
+              variant="outline"
+              size="sm"
+              className="text-red-700 border-red-300 hover:bg-red-100"
+            >
+              Dismiss
+            </Button>
+            <Button
+              onClick={handlePayment}
+              disabled={loading}
+              size="sm"
+              className="bg-red-600 text-white hover:bg-red-700"
+            >
+              Retry Payment
+            </Button>
+          </div>
         </div>
       )}
 

@@ -18,7 +18,8 @@ export default function OrderSummary({
   onEditAddress,
   onProceedToPayment,
 }: OrderSummaryProps) {
-  const price = parseFloat(book.price.replace("$", ""))
+  // Price is now numeric from database
+  const price = typeof book.price === "number" ? book.price : 0
 
   return (
     <div className="space-y-6">
@@ -37,7 +38,7 @@ export default function OrderSummary({
           <div className="flex-1">
             <h4 className="font-semibold text-foreground">{book.title}</h4>
             <p className="text-sm text-gray-600">by {book.author}</p>
-            <p className="text-lg font-bold text-primary mt-2">{book.price}</p>
+            <p className="text-lg font-bold text-primary mt-2">₹{price.toFixed(2)}</p>
           </div>
         </div>
       </div>

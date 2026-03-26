@@ -1,34 +1,37 @@
 "use client"
 
-import { X, Phone, MapPin } from "lucide-react"
+import { X, Phone, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import type { Book } from "@/lib/firestore"
+import type { CartItem } from "@/lib/cart.service"
 import type { UserAddress } from "@/lib/types"
 
-interface OrderSummaryModalProps {
+interface CartCheckoutSummaryProps {
   open: boolean
   onClose: () => void
   onProceed: () => void
   onChangeAddress: () => void
-  book: Book
+  items: CartItem[]
   address: UserAddress
+  subtotal: number
+  tax: number
+  total: number
+  error?: string | null
 }
 
-const OrderSummaryModal = ({
+export default function CartCheckoutSummary({
   open,
   onClose,
   onProceed,
   onChangeAddress,
-  book,
+  items,
   address,
-}: OrderSummaryModalProps) => {
+  subtotal,
+  tax,
+  total,
+  error,
+}: CartCheckoutSummaryProps) {
   if (!open) return null
-
-  // Price is now numeric from database
-  const price = typeof book.price === "number" ? book.price : 0
-  const tax = (price * 0.18).toFixed(2)
-  const total = (price + parseFloat(tax)).toFixed(2)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
@@ -49,34 +52,52 @@ const OrderSummaryModal = ({
             <X className="w-4 h-4" />
           </button>
         </div>
+
         <div className="px-6 pb-6 space-y-4">
-          {/* Book Details */}
+          {/* Error Alert */}
+          {error && (
+            <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 flex gap-3">
+              <AlertCircle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
+              <p className="text-sm text-destructive">{error}</p>
+            </div>
+          )}
+
+          {/* Cart Items */}
           <div className="bg-background rounded-lg border border-border p-4">
             <h3 className="font-serif text-sm font-semibold text-foreground mb-3">
-              Book Details
+              Order Items ({items.length})
             </h3>
-            <div className="flex gap-4">
-              <div className="w-20 h-28 bg-secondary/50 rounded-md flex items-center justify-center shrink-0 overflow-hidden relative">
-                <Image
-                  src={book.cover}
-                  alt={book.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="space-y-1">
-                <p className="font-semibold text-foreground text-sm">
-                  {book.title}
-                </p>
-                <p className="text-muted-foreground text-xs">
-                  by {book.author}
-                </p>
-                <p className="font-serif font-bold text-foreground text-lg mt-2">
-                  ₹{price.toFixed(2)}
-                </p>
-              </div>
+            <div className="space-y-3 max-h-48 overflow-y-auto">
+              {items.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex gap-3 pb-3 border-b border-border/50 last:border-0 last:pb-0"
+                >
+                  <div className="w-12 h-16 bg-secondary/50 rounded flex-shrink-0 overflow-hidden">
+                    <Image
+                      src={item.cover}
+                      alt={item.title}
+                      width={48}
+                      height={64}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-foreground text-sm truncate">
+                      {item.title}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      Qty: {item.quantity}
+                    </p>
+                    <p className="font-serif font-bold text-primary text-sm mt-1">
+                      ₹{(item.price * item.quantity).toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
+
           {/* Delivery Address */}
           <div className="bg-background rounded-lg border border-border p-4">
             <div className="flex items-center justify-between mb-3">
@@ -92,20 +113,21 @@ const OrderSummaryModal = ({
             </div>
             <div className="space-y-1">
               <p className="font-medium text-foreground text-sm">
-                {address.fullName || ""}
+                {address.fullName}
               </p>
               <p className="text-muted-foreground text-sm">
-                {address.fullAddress || ""}
+                {address.fullAddress}
               </p>
               <p className="text-muted-foreground text-sm">
                 {address.city}, {address.state} - {address.pincode}
               </p>
               <div className="flex items-center gap-1.5 text-muted-foreground text-sm pt-1">
                 <Phone className="w-3.5 h-3.5" />
-                {address.phoneNumber || ""}
+                {address.phoneNumber}
               </div>
             </div>
           </div>
+
           {/* Price Summary */}
           <div className="bg-background rounded-lg border border-border p-4">
             <h3 className="font-serif text-sm font-semibold text-foreground mb-3">
@@ -113,8 +135,8 @@ const OrderSummaryModal = ({
             </h3>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Price</span>
-                <span className="text-foreground">₹{price.toFixed(2)}</span>
+                <span className="text-muted-foreground">Subtotal</span>
+                <span className="text-foreground">₹{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Shipping</span>
@@ -122,7 +144,7 @@ const OrderSummaryModal = ({
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Tax (18%)</span>
-                <span className="text-foreground">₹{tax}</span>
+                <span className="text-foreground">₹{tax.toFixed(2)}</span>
               </div>
               <div className="h-px bg-border my-2" />
               <div className="flex justify-between">
@@ -130,24 +152,25 @@ const OrderSummaryModal = ({
                   Total Amount
                 </span>
                 <span className="font-serif font-bold text-foreground text-lg">
-                  ${total}
+                  ₹{total.toFixed(2)}
                 </span>
               </div>
             </div>
           </div>
         </div>
+
         {/* Footer */}
-        <div className="px-6 pb-6 flex gap-3">
+        <div className="px-6 pb-6 flex gap-3 border-t border-border/60">
           <Button
             variant="outline"
             onClick={onClose}
-            className="flex-1 h-11 rounded-lg border-border text-foreground font-medium"
+            className="flex-1 h-11 rounded-lg border-border text-foreground font-medium mt-4"
           >
-            Save for Later
+            Cancel
           </Button>
           <Button
             onClick={onProceed}
-            className="flex-1 h-11 rounded-lg bg-primary text-primary-foreground hover:bg-primary-hover font-semibold"
+            className="flex-1 h-11 rounded-lg bg-primary text-primary-foreground hover:bg-primary-hover font-semibold mt-4"
           >
             Proceed to Payment
           </Button>
@@ -156,5 +179,3 @@ const OrderSummaryModal = ({
     </div>
   )
 }
-
-export default OrderSummaryModal

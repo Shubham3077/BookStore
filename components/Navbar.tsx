@@ -3,11 +3,13 @@
 import { Search, ShoppingBag, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/lib/firebase-auth-context"
+import { useCart } from "@/lib/cart-context"
 import { useRouter } from "next/navigation"
 
 const Navbar = () => {
   const links = ["Shop", "Collections", "Blog", "About"]
   const { user, loading, signOut } = useAuth()
+  const { itemCount } = useCart()
   const router = useRouter()
 
   return (
@@ -52,13 +54,16 @@ const Navbar = () => {
                 <Button 
                   variant="ghost" 
                   size="icon" 
+                  onClick={() => router.push("/cart")}
                   className="h-10 w-10 lg:h-11 lg:w-11 text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors relative"
                   aria-label="Shopping cart"
                 >
                   <ShoppingBag className="h-5 w-5 lg:h-6 lg:w-6" />
-                  <span className="absolute -top-1 -right-1 h-5 w-5 lg:h-5 lg:w-5 rounded-full bg-primary text-text text-[10px] lg:text-xs flex items-center justify-center font-bold shadow-md">
-                    3
-                  </span>
+                  {itemCount > 0 && (
+                    <span className="absolute -top-1 -right-1 h-5 w-5 lg:h-5 lg:w-5 rounded-full bg-primary text-text text-[10px] lg:text-xs flex items-center justify-center font-bold shadow-md">
+                      {itemCount > 99 ? "99+" : itemCount}
+                    </span>
+                  )}
                 </Button>
 
                 {/* Sign Out Button */}
