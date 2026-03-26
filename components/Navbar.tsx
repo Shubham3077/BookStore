@@ -26,6 +26,7 @@ const Navbar = () => {
             let href = "#";
             if (link === "Blog") href = "/blog";
             if (link === "Collections") href = "/collections";
+            if (link === "About") href = "/about";
             
             return (
               <li key={link}>
