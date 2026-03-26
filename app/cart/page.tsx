@@ -124,6 +124,7 @@ export default function CartPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  console.log(items, "cart items")
 
   useEffect(() => {
     if (!authLoading && !user) {

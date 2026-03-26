@@ -25,6 +25,7 @@ const Navbar = () => {
           {links.map((link) => {
             let href = "#";
             if (link === "Blog") href = "/blog";
+            if (link === "Collections") href = "/collections";
             
             return (
               <li key={link}>
