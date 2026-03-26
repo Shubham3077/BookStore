@@ -22,16 +22,21 @@ const Navbar = () => {
 
         {/* Desktop Navigation Links */}
         <ul className="hidden md:flex items-center gap-8 lg:gap-12 flex-1 mx-8">
-          {links.map((link) => (
-            <li key={link}>
-              <a
-                href="#"
-                className="text-sm lg:text-base text-gray-600 hover:text-primary font-medium transition-colors duration-200"
-              >
-                {link}
-              </a>
-            </li>
-          ))}
+          {links.map((link) => {
+            let href = "#";
+            if (link === "Blog") href = "/blog";
+            
+            return (
+              <li key={link}>
+                <a
+                  href={href}
+                  className="text-sm lg:text-base text-gray-600 hover:text-primary font-medium transition-colors duration-200"
+                >
+                  {link}
+                </a>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Right Section - Icons */}
