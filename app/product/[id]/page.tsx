@@ -229,10 +229,10 @@ export default function ProductDetail() {
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <div className="flex flex-col gap-2 pt-4 sm:flex-row sm:gap-3 w-full sm:w-auto">
               <Button
                 onClick={handleBuyNow}
-                className="h-12 px-8 rounded-lg bg-primary text-primary-foreground hover:bg-primary-hover font-semibold text-sm flex-1 sm:flex-none"
+                className="h-10 sm:h-11 px-4 sm:px-8 rounded-lg bg-primary text-primary-foreground hover:bg-primary-hover font-semibold text-xs sm:text-sm transition-all duration-200 w-full sm:w-auto"
               >
                 Buy Now
               </Button>
@@ -240,17 +240,17 @@ export default function ProductDetail() {
                 onClick={handleAddToCart}
                 disabled={addingToCart}
                 variant="outline"
-                className="h-12 px-8 rounded-lg border-border text-foreground font-medium text-sm flex-1 sm:flex-none disabled:opacity-60"
+                className="h-10 sm:h-11 px-4 sm:px-8 rounded-lg border-border text-foreground font-medium text-xs sm:text-sm disabled:opacity-60 transition-all duration-200 w-full sm:w-auto"
               >
                 {addingToCart ? (
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center justify-center gap-1 sm:gap-2">
                     <span className="w-3 h-3 border-2 border-foreground border-t-transparent rounded-full animate-spin" />
-                    Adding...
+                    <span>Adding...</span>
                   </span>
                 ) : (
-                  <span className="flex items-center gap-2">
-                    <ShoppingCart className="w-4 h-4" />
-                    Add to Cart
+                  <span className="flex items-center justify-center gap-1 sm:gap-2">
+                    <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span>Add to Cart</span>
                   </span>
                 )}
               </Button>

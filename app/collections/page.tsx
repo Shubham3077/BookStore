@@ -71,8 +71,8 @@ export default async function Collections() {
                     <div className="flex gap-2 mt-auto pointer-events-none">
                       {/* Details Button */}
                       <div className="flex-1 h-10 lg:h-11 rounded-full border border-border text-foreground font-medium text-xs lg:text-sm transition-all duration-200 hover:bg-muted flex items-center justify-center gap-2">
-                        <ShoppingBag className="h-4 w-4" />
-                        Details
+                        {/* <ShoppingBag className="h-4 w-4" /> */}
+                        Add to Cart
                       </div>
 
                       {/* Buy Now Button */}
