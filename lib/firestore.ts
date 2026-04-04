@@ -27,6 +27,7 @@ export type Book = {
 }
 
 export type Hero = {
+  bookId: string
   id: string
   title: string
   author: string

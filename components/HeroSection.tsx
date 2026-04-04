@@ -7,7 +7,7 @@ type Props = { data: Hero | null }
 
 const HeroSection = ({ data }: Props) => {
   if (!data) return null
-  const href = data.id ? `/product/${data.id}` : data.ctaLink
+  const href = data.bookId ? `/product/${data.bookId}` : data.ctaLink
   return (
     <Link href={href}>
       <section className="w-full bg-primary py-16 lg:py-24 cursor-pointer transition-opacity hover:opacity-95">

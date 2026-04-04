@@ -61,3 +61,24 @@ export type Book = {
   price: number;
   title: string;
 };
+
+// Invoice Type
+export type Invoice = {
+  id: string;
+  orderId: string;
+  userId: string;
+  razorpayInvoiceId?: string;
+  invoicePdfUrl?: string;
+  status: "pending" | "issued" | "sent" | "failed";
+  userEmail: string;
+  adminEmail: string;
+  totalAmount: number;
+  gstAmount: number;
+  gstNumber: string;
+  itemsCount: number;
+  sentToUser: boolean;
+  sentToAdmin: boolean;
+  createdAt: string;
+  sentAt?: string;
+  failureReason?: string;
+};
