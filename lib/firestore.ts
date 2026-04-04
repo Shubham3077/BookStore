@@ -115,3 +115,15 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     return []
   }
 }
+
+export async function getBookById(id: string): Promise<Book | null> {
+  if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || !db) return null
+  try {
+    const snap = await getDoc(doc(db, "books", id))
+    if (!snap.exists()) return null
+    return toData(snap.id, snap.data()) as Book
+  } catch (error) {
+    console.error("Error fetching book:", error)
+    return null
+  }
+}

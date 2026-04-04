@@ -30,8 +30,9 @@ export default async function Collections() {
           <div className="mx-auto max-w-[80%]">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
               {books.map((book: Book) => (
-                <div
+                <Link
                   key={book.id}
+                  href={`/product/${book.id}`}
                   className="group relative h-full bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col"
                 >
                   {/* Image Container */}
@@ -67,25 +68,20 @@ export default async function Collections() {
                     <p className="text-lg font-semibold text-foreground mb-5">₹{book.price}</p>
 
                     {/* Button Container - Spacer to push to bottom */}
-                    <div className="flex gap-2 mt-auto">
-                      {/* Add to Cart Button */}
-                      <Link
-                        href={`/product/${book.id}`}
-                        className="flex-1"
-                      >
-                        <button className="w-full h-10 lg:h-11 rounded-full border border-border text-foreground font-medium text-xs lg:text-sm transition-all duration-200 hover:bg-muted flex items-center justify-center gap-2">
-                          <ShoppingBag className="h-4 w-4" />
-                          Details
-                        </button>
-                      </Link>
+                    <div className="flex gap-2 mt-auto pointer-events-none">
+                      {/* Details Button */}
+                      <div className="flex-1 h-10 lg:h-11 rounded-full border border-border text-foreground font-medium text-xs lg:text-sm transition-all duration-200 hover:bg-muted flex items-center justify-center gap-2">
+                        <ShoppingBag className="h-4 w-4" />
+                        Details
+                      </div>
 
                       {/* Buy Now Button */}
-                      <button className="flex-1 h-10 lg:h-11 rounded-full bg-primary text-primary-foreground hover:bg-primary-hover font-semibold text-xs lg:text-sm shadow-md hover:shadow-lg transition-all duration-200 active:scale-95">
+                      <div className="flex-1 h-10 lg:h-11 rounded-full bg-primary text-primary-foreground font-semibold text-xs lg:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center">
                         Buy Now
-                      </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

@@ -26,7 +26,7 @@ export default async function Home() {
       <HeroSection data={hero} />
       <NewCollection books={books} />
       <DiscountBanner data={discount} />
-      <Recommended books={recommended} />
+      {/* <Recommended books={recommended} /> */}
       <BlogSection posts={blogs} />
       <Footer />
     </>

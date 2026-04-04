@@ -41,3 +41,23 @@ export type RazorpayOrderResponse = {
   notes: Record<string, any>
   created_at: number
 }
+
+
+type BookDetails = {
+  dimensions: string;
+  pages: number;
+  publisher: string;
+};
+
+export type Book = {
+  id: number,
+  author: string;
+  authorDescription: string;
+  badge: string;
+  bookDescription: string;
+  bookDetails: BookDetails; // The (map) from your data
+  cover: string;
+  order: number;
+  price: number;
+  title: string;
+};

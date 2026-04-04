@@ -1,5 +1,6 @@
 import { Star, ArrowRight } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import type { Book } from "@/lib/firestore"
 
 type Props = { books: Book[] }
@@ -24,9 +25,10 @@ const Recommended = ({ books }: Props) => {
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {books.map((book) => (
-            <div
+            <Link
               key={book.id}
-              className="group bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5"
+              href={`/product/${book.id}`}
+              className="group bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 block"
             >
               <div className="aspect-[3/4] overflow-hidden bg-(muted)">
                 <Image
@@ -55,7 +57,7 @@ const Recommended = ({ books }: Props) => {
                   &quot;{book.review}&quot;
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         <div className="mt-8 text-center md:hidden">
