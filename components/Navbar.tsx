@@ -1,16 +1,19 @@
 "use client"
 
+import { useState } from "react"
 import { Search, ShoppingBag, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/lib/firebase-auth-context"
 import { useCart } from "@/lib/cart-context"
 import { useRouter } from "next/navigation"
+import SearchOverlay from "./SearchOverlay"
 
 const Navbar = () => {
-  const links = ["Shop", "Collections", "Blog", "About"]
+  const links = ["Collections", "Blog", "About"]
   const { user, loading, signOut } = useAuth()
   const { itemCount } = useCart()
   const router = useRouter()
+  const [searchOpen, setSearchOpen] = useState(false)
 
   return (
     <nav className="sticky top-0 z-50 border-b border-gray-200 bg-background/95 backdrop-blur-sm border-border/60 shadow-[0_1px_3px_0_hsl(var(--foreground)/0.04)]">
@@ -47,6 +50,7 @@ const Navbar = () => {
           <Button 
             variant="ghost" 
             size="icon" 
+            onClick={() => setSearchOpen(true)}
             className="h-10 w-10 lg:h-11 lg:w-11 text-gray-700 hover:bg-(--primary)-100 hover:text-primary transition-colors"
             aria-label="Search"
           >
@@ -96,6 +100,9 @@ const Navbar = () => {
             ))}
         </div>
       </div>
+      
+      {/* Search Overlay */}
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     </nav>
   )
 }

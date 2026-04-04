@@ -50,7 +50,7 @@ type BookDetails = {
 };
 
 export type Book = {
-  id: number,
+  id: string,
   author: string;
   authorDescription: string;
   badge: string;
