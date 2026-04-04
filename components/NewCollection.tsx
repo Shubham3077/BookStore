@@ -71,9 +71,9 @@ const NewCollection = ({ books }: Props) => {
 
   return (
     <>
-      <section className="py-16 lg:py-20">
-        <div className="mx-auto max-w-[90%] sm:max-w-[85%] lg:max-w-[80%]">
-          <h2 className="text-4xl lg:text-5xl font-serif font-semibold text-foreground text-center mb-12 lg:mb-16">
+      <section className="py-12 sm:py-16 lg:py-20">
+        <div className="mx-auto max-w-[95%] sm:max-w-[90%] md:max-w-[85%] lg:max-w-[80%]">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-semibold text-foreground text-center mb-8 sm:mb-12 lg:mb-16">
             New Collection
           </h2>
           <div className="relative">
@@ -98,11 +98,11 @@ const NewCollection = ({ books }: Props) => {
             {/* Scrollable Container */}
             <div
               ref={scrollRef}
-              className="flex gap-4 lg:gap-6 overflow-x-auto scrollbar-hide scroll-smooth px-4"
+              className="flex gap-3 sm:gap-4 lg:gap-6 overflow-x-auto scrollbar-hide scroll-smooth px-2 sm:px-4"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {books.map((book) => (
-                <div key={book.id} className="flex-shrink-0 w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
+                <div key={book.id} className="flex-shrink-0 w-[calc(100vw-48px)] xs:w-[calc(50%-8px)] sm:w-[calc(50%-10px)] md:w-[calc(33.333%-12px)] lg:w-[calc(25%-18px)]">
                   <div className="group relative h-full bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col">
                     {/* Link wrapper for image and content */}
                     <Link href={`/product/${book.id}`} className="flex-1 flex flex-col">
@@ -126,23 +126,23 @@ const NewCollection = ({ books }: Props) => {
                       </div>
 
                       {/* Content Container */}
-                      <div className="p-4 lg:p-5 flex flex-col flex-1">
+                      <div className="p-3 sm:p-4 lg:p-5 flex flex-col flex-1">
                         {/* Title */}
-                        <h3 className="font-serif font-semibold text-foreground text-base lg:text-lg mb-1.5 leading-snug">
+                        <h3 className="font-serif font-semibold text-foreground text-sm sm:text-base lg:text-lg mb-1 sm:mb-1.5 leading-snug line-clamp-2">
                           {book.title}
                         </h3>
 
                         {/* Author */}
-                        <p className="text-sm text-muted-foreground mb-2">{book.author}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-2 line-clamp-1">{book.author}</p>
 
                         {/* Price */}
-                        <p className="text-lg font-semibold text-foreground mb-5">₹{book.price}</p>
+                        <p className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4 lg:mb-5">₹{book.price}</p>
                       </div>
                     </Link>
 
                     {/* Feedback Message */}
                     {feedback?.bookId === book.id && (
-                      <div className={`text-xs font-medium mb-3 p-2 rounded flex items-center gap-1 ${
+                      <div className={`text-xs font-medium mb-2 sm:mb-3 p-2 rounded flex items-center gap-1 mx-3 sm:mx-4 ${
                         feedback.type === "success"
                           ? "bg-green-50 text-green-700"
                           : "bg-red-50 text-red-700"
@@ -153,23 +153,25 @@ const NewCollection = ({ books }: Props) => {
                     )}
 
                     {/* Button Container - Spacer to push to bottom */}
-                    <div className="flex gap-2 p-4 lg:p-5 pt-0">
+                    <div className="flex gap-2 sm:gap-2.5 md:gap-3 lg:gap-2 p-3 sm:p-4 lg:p-5 pt-0 mt-auto">
                       {/* Add to Cart Button */}
                       <Button
                         onClick={() => handleAddToCart(book)}
                         disabled={addingToCart === book.id}
                         variant="outline"
-                        className="flex-1 h-10 lg:h-11 rounded-full border-border text-foreground font-medium text-xs lg:text-sm transition-all duration-200 disabled:opacity-60"
+                        className="flex-1 h-9 sm:h-10 lg:h-11 rounded-full border-border text-foreground font-medium text-xs transition-all duration-200 disabled:opacity-60 px-2 sm:px-3"
                       >
                         {addingToCart === book.id ? (
-                          <span className="flex items-center gap-2">
+                          <span className="flex items-center gap-1 sm:gap-2">
                             <span className="w-3 h-3 border-2 border-foreground border-t-transparent rounded-full animate-spin" />
-                            Adding...
+                            <span className="hidden sm:inline">Adding...</span>
+                            <span className="sm:hidden">...</span>
                           </span>
                         ) : (
-                          <span className="flex items-center gap-2">
-                            <ShoppingBag className="h-4 w-4" />
-                            Add to Cart
+                          <span className="flex items-center gap-1 sm:gap-2">
+                            <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                            <span className="hidden sm:inline">Add to Cart</span>
+                            <span className="sm:hidden">Add</span>
                           </span>
                         )}
                       </Button>
@@ -177,9 +179,10 @@ const NewCollection = ({ books }: Props) => {
                       {/* Buy Now Button */}
                       <Button
                         onClick={() => handleBuyNow(book)}
-                        className="flex-1 h-10 lg:h-11 rounded-full bg-primary text-primary-foreground hover:bg-primary-hover font-semibold text-xs lg:text-sm shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
+                        className="flex-1 h-9 sm:h-10 lg:h-11 rounded-full bg-primary text-primary-foreground hover:bg-primary-hover font-semibold text-xs transition-all duration-200 active:scale-95 shadow-md hover:shadow-lg px-2 sm:px-3"
                       >
-                        Buy Now
+                        <span className="hidden sm:inline">Buy Now</span>
+                        <span className="sm:hidden">Buy</span>
                       </Button>
                     </div>
                   </div>
