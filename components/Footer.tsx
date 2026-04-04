@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="rounded-xl border border-footer-foreground/10 bg-footer-foreground/[0.03] px-8 py-12 lg:px-12 lg:py-14 shadow-[0_2px_16px_0_hsl(0_0%_0%/0.08)]">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
             <div>
-              <h3 className="font-serif text-xl font-bold mb-4">The Reading Nook</h3>
+              <h3 className="font-serif text-xl font-bold mb-4">Mudita Book Store</h3>
               <p className="text-sm text-footer-foreground/70 leading-relaxed">
                 A curated bookstore for thoughtful readers. Discover stories that inspire, challenge, and delight.
               </p>
@@ -17,9 +17,14 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold text-sm uppercase tracking-wider mb-4">Quick Links</h4>
               <ul className="space-y-2.5 text-sm text-footer-foreground/70">
-                {["Shop", "Collections", "Blog", "About Us", "Contact"].map((l) => (
-                  <li key={l}>
-                    <a href="#" className="hover:text-footer-foreground transition-colors duration-200">{l}</a>
+                {[
+                  { label: "Collections", href: "/collections" },
+                  { label: "Blog", href: "/blog" },
+                  { label: "About Us", href: "/about" },
+                  { label: "Contact", href: "/contact" },
+                ].map((link) => (
+                  <li key={link.label}>
+                    <a href={link.href} className="hover:text-footer-foreground transition-colors duration-200">{link.label}</a>
                   </li>
                 ))}
               </ul>
@@ -53,7 +58,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-10 pt-6 border-t border-footer-foreground/15 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-footer-foreground/50">© 2026 The Reading Nook. All rights reserved.</p>
+          <p className="text-xs text-footer-foreground/50">© 2026 The Mudita Book Store. All rights reserved.</p>
           <div className="flex items-center gap-4">
             {[Facebook, Instagram, Twitter, Youtube].map((Icon, i) => (
               <a key={i} href="#" className="text-footer-foreground/50 hover:text-footer-foreground transition-colors duration-200">

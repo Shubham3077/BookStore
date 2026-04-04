@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation"
 import SearchOverlay from "./SearchOverlay"
 
 const Navbar = () => {
-  const links = ["Collections", "Blog", "About"]
+  const links = ["Collections", "Blog", "About", "Contact"]
   const { user, loading, signOut } = useAuth()
   const { itemCount } = useCart()
   const router = useRouter()
@@ -30,6 +30,7 @@ const Navbar = () => {
             if (link === "Blog") href = "/blog";
             if (link === "Collections") href = "/collections";
             if (link === "About") href = "/about";
+            if (link === "Contact") href = "/contact";
             
             return (
               <li key={link}>
