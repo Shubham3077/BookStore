@@ -1,9 +1,12 @@
 import BlogSection from "@/components/BlogSection"
+import Categories from "@/components/Categories"
 import DiscountBanner from "@/components/DiscountBanner"
 import Footer from "@/components/Footer"
 import HeroSection from "@/components/HeroSection"
 import NewCollection from "@/components/NewCollection"
 import Recommended from "@/components/Recommended"
+import Testimonials from "@/components/Testimonial"
+import WhyOurBooks from "@/components/WhyOurBooks"
 import {
   getBooks,
   getHero,
@@ -25,9 +28,12 @@ export default async function Home() {
     <>
       <HeroSection data={hero} />
       <NewCollection books={books} />
+      <Categories/>
+      <WhyOurBooks /> 
       <DiscountBanner data={discount} />
       {/* <Recommended books={recommended} /> */}
-      <BlogSection posts={blogs} />
+      {/* <BlogSection posts={blogs} /> */}
+      <Testimonials/>
       <Footer />
     </>
   )
