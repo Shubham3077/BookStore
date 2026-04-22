@@ -75,6 +75,7 @@ export async function getHero(): Promise<Hero | null> {
     if (!snap.exists()) return null
     return toData(snap.id, snap.data()) as Hero
   } catch (error) {
+    console.log("error, ", error)
     console.error(error);
     return null
   }
