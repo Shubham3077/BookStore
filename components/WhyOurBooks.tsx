@@ -1,5 +1,4 @@
-'use client';
-
+'use client'
 import { BookOpen, Shield, Users, Layers, Brain } from "lucide-react";
 
 const features = [

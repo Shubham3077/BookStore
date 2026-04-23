@@ -1,40 +1,27 @@
-"use-client"
-import { BookText, Leaf, Landmark, Microscope, Lightbulb } from "lucide-react";
+import Link from "next/link"
+import {
+  BookText,
+  Leaf,
+  Landmark,
+  Microscope,
+  Lightbulb,
+  type LucideIcon,
+} from "lucide-react"
+import { getCategories } from "@/lib/firestore"
 
-const categories = [
-  {
-    id: 1,
-    title: "Knowledge & Facts",
-    icon: BookText,
-    description: "Expand your understanding of the world",
-  },
-  {
-    id: 2,
-    title: "Environment & Sustainability",
-    icon: Leaf,
-    description: "Read for a better, greener planet",
-  },
-  {
-    id: 3,
-    title: "Economy & Policy",
-    icon: Landmark,
-    description: "Navigate complex systems and ideas",
-  },
-  {
-    id: 4,
-    title: "Science & Technology",
-    icon: Microscope,
-    description: "Discover innovations shaping tomorrow",
-  },
-  {
-    id: 5,
-    title: "Thought & Inspiration",
-    icon: Lightbulb,
-    description: "Ignite creativity and reflection",
-  },
-];
+const iconMap: Record<string, LucideIcon> = {
+  BookText,
+  Leaf,
+  Landmark,
+  Microscope,
+  Lightbulb,
+}
 
-const Categories = () => {
+const Categories = async () => {
+  const categories = await getCategories()
+
+  if (!categories.length) return null
+
   return (
     <section className="py-16 lg:py-24 bg-primary">
       <div className="mx-auto max-w-[80%]">
@@ -51,13 +38,14 @@ const Categories = () => {
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5">
           {categories.map((category, index) => {
-            const Icon = category.icon;
+            const Icon = iconMap[category.icon] ?? BookText
             const isLastOdd =
-              index === categories.length - 1 && categories.length % 2 !== 0;
+              index === categories.length - 1 && categories.length % 2 !== 0
 
             return (
-              <button
+              <Link
                 key={category.id}
+                href={`/collections/category/${category.id}`}
                 className={`
                   group flex items-center gap-4 lg:gap-5
                   bg-secondary rounded-xl p-4 lg:p-5
@@ -94,13 +82,13 @@ const Categories = () => {
                     {category.description}
                   </p>
                 </div>
-              </button>
-            );
+              </Link>
+            )
           })}
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Categories;
+export default Categories

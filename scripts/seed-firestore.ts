@@ -744,7 +744,11 @@ async function seed() {
     },
   ]
   books.forEach((b) => {
-    batch.set(doc(collection(db, "books"), `book-${b.order}`), b)
+    const category = typeof b.categoryId === "number" ? b.categoryId : null
+    batch.set(doc(collection(db, "books"), `book-${b.order}`), {
+      ...b,
+      category,
+    })
   })
 
   // Recommended

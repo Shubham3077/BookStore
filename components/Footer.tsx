@@ -1,8 +1,30 @@
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+"use client"
+
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Facebook, Instagram, Twitter, Youtube } from "lucide-react"
+import { getCategories, type Category } from "@/lib/firestore"
 
 const Footer = () => {
+  const [categories, setCategories] = useState<Category[]>([])
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function loadCategories() {
+      const data = await getCategories()
+      if (isMounted) setCategories(data)
+    }
+
+    loadCategories()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
   return (
     <footer className="bg-footer text-footer-foreground">
       <div className="mx-auto max-w-[80%] py-16 lg:py-20">
@@ -24,7 +46,12 @@ const Footer = () => {
                   { label: "Contact", href: "/contact" },
                 ].map((link) => (
                   <li key={link.label}>
-                    <a href={link.href} className="hover:text-footer-foreground transition-colors duration-200">{link.label}</a>
+                    <Link
+                      href={link.href}
+                      className="hover:text-footer-foreground transition-colors duration-200"
+                    >
+                      {link.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -32,9 +59,23 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold text-sm uppercase tracking-wider mb-4">Categories</h4>
               <ul className="space-y-2.5 text-sm text-footer-foreground/70">
-                {["Fiction", "Non-Fiction", "Poetry", "Academic", "Children's"].map((c) => (
-                  <li key={c}>
-                    <a href="#" className="hover:text-footer-foreground transition-colors duration-200">{c}</a>
+                {(categories.length
+                  ? categories
+                  : [
+                      { id: 1, title: "Knowledge & Facts" },
+                      { id: 2, title: "Environment & Sustainability" },
+                      { id: 3, title: "Economy & Policy" },
+                      { id: 4, title: "Science & Technology" },
+                      { id: 5, title: "Thought & Inspiration" },
+                    ]
+                ).map((category) => (
+                  <li key={category.id}>
+                    <Link
+                      href={`/collections/category/${category.id}`}
+                      className="hover:text-footer-foreground transition-colors duration-200"
+                    >
+                      {category.title}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -69,7 +110,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

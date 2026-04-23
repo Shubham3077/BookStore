@@ -7,14 +7,14 @@ import {
 } from "firebase/firestore"
 import { db } from "./firebase"
 
-export type RecommendedBook = {
+export interface RecommendedBook {
   id: string
   title: string
   cover: string
   price: number
 }
 
-export type Book = {
+export interface Book {
   id: string
   title: string
   author: string
@@ -31,7 +31,8 @@ export type Book = {
   order?: number
   rating?: number
   review?: string
-  category?: string
+  category?: number | string
+  categoryId?: number
   whoShouldReadThis?: string[]
   whatYouWillLearn?: string[]
   recommendedBooks?: RecommendedBook[]
@@ -129,7 +130,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   }
 }
 
-export type Category = {
+export interface Category {
   id: number
   title: string
   icon: string
@@ -146,6 +147,28 @@ export async function getCategories(): Promise<Category[]> {
   } catch {
     return []
   }
+}
+
+const parseCategoryId = (value: unknown): number | null => {
+  if (typeof value === "number" && Number.isFinite(value)) return value
+  if (typeof value === "string") {
+    const parsed = Number(value)
+    if (Number.isFinite(parsed)) return parsed
+  }
+  return null
+}
+
+const getBookCategoryId = (book: Book): number | null =>
+  parseCategoryId(book.category ?? book.categoryId)
+
+export async function getCategoryById(categoryId: number): Promise<Category | null> {
+  const categories = await getCategories()
+  return categories.find((category) => category.id === categoryId) ?? null
+}
+
+export async function getBooksByCategory(categoryId: number): Promise<Book[]> {
+  const books = await getBooks()
+  return books.filter((book) => getBookCategoryId(book) === categoryId)
 }
 
 export async function getBookById(id: string): Promise<Book | null> {
