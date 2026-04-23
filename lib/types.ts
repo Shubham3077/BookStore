@@ -49,17 +49,35 @@ type BookDetails = {
   publisher: string;
 };
 
+type RecommendedBook = {
+  id: string;
+  title: string;
+  cover: string;
+  price: number;
+};
+
 export type Book = {
-  id: string,
+  id: string;
   author: string;
   authorDescription: string;
   badge: string;
   bookDescription: string;
-  bookDetails: BookDetails; // The (map) from your data
+  bookDetails: BookDetails;
   cover: string;
   order: number;
   price: number;
   title: string;
+  categoryId?: number;
+  whoShouldReadThis?: string[];
+  whatYouWillLearn?: string[];
+  recommendedBooks?: RecommendedBook[];
+};
+
+export type Category = {
+  id: number;
+  title: string;
+  icon: string;
+  description: string;
 };
 
 // Invoice Type

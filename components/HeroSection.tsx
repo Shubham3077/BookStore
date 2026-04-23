@@ -1,13 +1,13 @@
 import { ArrowRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import type { Hero } from "@/lib/firestore"
+import type { Book } from "@/lib/firestore"
 
-type Props = { data: Hero | null }
+type Props = { data: Book | null }
 
 const HeroSection = ({ data }: Props) => {
   if (!data) return null
-  const href = data.bookId ? `/product/${data.bookId}` : data.ctaLink
+  const href = `/product/${data.id}`
   return (
     <Link href={href}>
       <section className="w-full bg-primary py-16 lg:py-24 cursor-pointer transition-opacity hover:opacity-95">
@@ -16,7 +16,7 @@ const HeroSection = ({ data }: Props) => {
             {data.title}
           </h1>
           <p className="text-base lg:text-lg text-foreground/60 mb-10 font-light tracking-wide">
-            {data.author}
+            {data.bookDescription || data.author}
           </p>
           <div className="flex justify-center mb-10">
             <Image
@@ -29,7 +29,7 @@ const HeroSection = ({ data }: Props) => {
             />
           </div>
           <div className="inline-flex items-center gap-2 text-foreground/70 group">
-            <span className="text-sm font-medium">{data.ctaText}</span>
+            <span className="text-sm font-medium">Discover the book</span>
             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
           </div>
         </div>

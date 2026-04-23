@@ -7,6 +7,13 @@ import {
 } from "firebase/firestore"
 import { db } from "./firebase"
 
+export type RecommendedBook = {
+  id: string
+  title: string
+  cover: string
+  price: number
+}
+
 export type Book = {
   id: string
   title: string
@@ -24,6 +31,10 @@ export type Book = {
   order?: number
   rating?: number
   review?: string
+  category?: string
+  whoShouldReadThis?: string[]
+  whatYouWillLearn?: string[]
+  recommendedBooks?: RecommendedBook[]
 }
 
 export type Hero = {
@@ -113,6 +124,25 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
       .map((d) => toData(d.id, d.data()) as BlogPost)
       .sort((a, b) => b.date.localeCompare(a.date))
       .slice(0, 3)
+  } catch {
+    return []
+  }
+}
+
+export type Category = {
+  id: number
+  title: string
+  icon: string
+  description: string
+}
+
+export async function getCategories(): Promise<Category[]> {
+  if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) return []
+  try {
+    const snap = await getDocs(collection(db, "categories"))
+    return snap.docs
+      .map((d) => d.data() as Category)
+      .sort((a, b) => a.id - b.id)
   } catch {
     return []
   }

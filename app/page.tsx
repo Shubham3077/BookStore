@@ -9,15 +9,15 @@ import Testimonials from "@/components/Testimonial"
 import WhyOurBooks from "@/components/WhyOurBooks"
 import {
   getBooks,
-  getHero,
+  getBookById,
   getDiscount,
   getRecommendedBooks,
   getBlogPosts,
 } from "@/lib/firestore"
 
 export default async function Home() {
-  const [hero, discount, books, recommended, blogs] = await Promise.all([
-    getHero(),
+  const [heroBook, discount, books, recommended, blogs] = await Promise.all([
+    getBookById("book-1"),
     getDiscount(),
     getBooks(),
     getRecommendedBooks(),
@@ -26,7 +26,7 @@ export default async function Home() {
 
   return (
     <>
-      <HeroSection data={hero} />
+      <HeroSection data={heroBook} />
       <NewCollection books={books} />
       <Categories/>
       <WhyOurBooks /> 

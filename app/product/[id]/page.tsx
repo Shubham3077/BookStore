@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ArrowLeft, ShoppingCart } from "lucide-react"
+import { ArrowLeft, ShoppingCart, ExternalLink, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -11,6 +11,9 @@ import Footer from "@/components/Footer"
 import DeliveryAddressModal from "@/components/modals/DeliveryAddressModal"
 import OrderSummaryModal from "@/components/modals/OrderSummaryModal"
 import PaymentModal from "@/components/modals/PaymentModal"
+import WhoShouldReadSection from "@/components/WhoShouldReadSection"
+import WhatYouWillLearnSection from "@/components/WhatYouWillLearnSection"
+import RecommendedBooksSection from "@/components/RecommendedBooksSection"
 import { getBookById, type Book } from "@/lib/firestore"
 import { getUserAddresses } from "@/lib/firestore-address"
 import { useAuth } from "@/lib/firebase-auth-context"
@@ -180,14 +183,25 @@ export default function ProductDetail() {
               <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
                 {book.title}
               </h1>
-              {book.authorDescription && (
+              <p className="text-muted-foreground text-base md:text-lg mt-2">{book.author}</p>
+              {/* {book.authorDescription && (
                 <p className="text-muted-foreground text-base md:text-lg mt-2">
                   {book.authorDescription}
                 </p>
-              )}
+              )} */}
             </div>
+            {/* Book Description */}
+            {book.bookDescription && (
+              <div className="space-y-2 text-sm text-foreground pt-4">
+                <h3 className="font-medium text-foreground">About this book</h3>
+                <p className="leading-relaxed text-muted-foreground">
+                  {book.bookDescription}
+                </p>
+              </div>
+            )}
 
-            <p className="text-foreground text-sm md:text-base font-medium">{book.author}</p>
+            
+
 
             {/* Format Selector */}
             <div className="flex items-center gap-6">
@@ -249,7 +263,7 @@ export default function ProductDetail() {
                   </span>
                 ) : (
                   <span className="flex items-center justify-center gap-1 sm:gap-2">
-                    <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    {/* <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> */}
                     <span>Add to Cart</span>
                   </span>
                 )}
@@ -271,9 +285,44 @@ export default function ProductDetail() {
                 {addToCartFeedback.message}
               </div>
             )}
+            <div className="flex flex-col gap-4 rounded-lg border border-border/80 bg-secondary/30 p-4 sm:flex-row sm:items-center sm:justify-between">
+              <Button
+                asChild
+                variant="secondary"
+                className="h-11 justify-center rounded-lg px-5 text-sm font-medium sm:justify-start"
+              >
+                <a
+                  href="https://www.amazon.in/"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Buy from other platforms"
+                >
+                  Buy from other platforms
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+              </Button>
 
-            {/* Meta */}
-            {book.bookDetails && (
+              <div className="flex items-center justify-between gap-4 sm:justify-end">
+                <div className="flex items-center gap-1 text-primary" aria-hidden="true">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <Star
+                      key={index}
+                      className={cn(
+                        "h-4 w-4",
+                        index < 4 ? "fill-current" : "fill-current opacity-50"
+                      )}
+                    />
+                  ))}
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-foreground">4.5/5 rating</p>
+                  <p className="text-xs text-muted-foreground">120 reader reviews</p>
+                </div>
+              </div>
+            </div>
+
+        {/* Meta */}
+            {/* {book.bookDetails && (
               <div className="space-y-2 text-sm text-muted-foreground pt-4 border-t border-border">
                 {book.bookDetails.publisher && (
                   <p className="pt-2">Publisher: {book.bookDetails.publisher}</p>
@@ -283,17 +332,7 @@ export default function ProductDetail() {
                   <p>Dimensions: {book.bookDetails.dimensions}</p>
                 )}
               </div>
-            )}
-
-            {/* Book Description */}
-            {book.bookDescription && (
-              <div className="space-y-2 text-sm text-foreground pt-4">
-                <h3 className="font-medium text-foreground">About this book</h3>
-                <p className="leading-relaxed text-muted-foreground">
-                  {book.bookDescription}
-                </p>
-              </div>
-            )}
+            )} */}
           </div>
 
           {/* RIGHT: Book Image */}
@@ -309,6 +348,17 @@ export default function ProductDetail() {
             </div>
           </div>
         </div>
+
+        {/* Product Details Sections */}
+        <section className="mt-16 space-y-12 border-t border-border/70 pt-12 md:mt-20 md:space-y-14 md:pt-16">
+          <WhoShouldReadSection items={book.whoShouldReadThis} />
+          <WhatYouWillLearnSection
+            learningOutcomes={book.whatYouWillLearn}
+            learningHighlights={book.whatYouWillLearn?.slice(0, 3)}
+          />
+          <RecommendedBooksSection books={book.recommendedBooks} />
+        </section>
+        
       </main>
 
 
