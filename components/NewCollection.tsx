@@ -171,7 +171,7 @@ const NewCollection = ({ books }: Props) => {
                           <span className="flex items-center gap-1 sm:gap-2">
                             {/* <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> */}
                             <span className="hidden sm:inline">Add to Cart</span>
-                            {/* <span className="sm:hidden">Add</span> */}
+                            <span className="sm:hidden">Add to Cart</span>
                           </span>
                         )}
                       </Button>
@@ -182,7 +182,7 @@ const NewCollection = ({ books }: Props) => {
                         className="flex-1 h-9 sm:h-10 lg:h-11 rounded-full bg-primary text-primary-foreground hover:bg-primary-hover font-semibold text-xs transition-all duration-200 active:scale-95 shadow-md hover:shadow-lg px-2 sm:px-3"
                       >
                         <span className="hidden sm:inline">Buy Now</span>
-                        {/* <span className="sm:hidden">Buy</span> */}
+                        <span className="sm:hidden">Buy Now</span>
                       </Button>
                     </div>
                   </div>

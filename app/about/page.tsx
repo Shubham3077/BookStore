@@ -38,7 +38,6 @@ const values = [
 const About = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       <main className="py-16 lg:py-24">
         <section className="mx-auto w-[80%] max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
